@@ -430,4 +430,41 @@ Cardinalidades explícitas para evitar ambigüedad.
 Atributos en las entidades correctas (no meter fecha_prestamo en Libro, por ejemplo).
 
 
+------------------------------------------------------------------------------------
+drop database if exists bibloteca_easy;
+create database bibloteca_easy;
+use bibloteca_easy;
+
+create table usuarios(
+id_usuario int auto_increment primary key ,
+nombre_completo varchar(100) not null,
+identificacion varchar(50) not null unique,
+correo varchar(100) unique,
+contrasena varchar(100) not null,
+telefono varchar(30) default null
+); 
+
+create table libros(
+isbn varchar(50) not null primary key,
+titulo varchar(255) not null,
+anio_de_publicacion year default null,
+autor varchar(100) default null 
+);
+
+create table prestamos(
+id_prestamo int not null auto_increment primary key,
+id_usuario int, 
+isbn varchar(50),
+fecha_prestamo date not null,
+fecha_devolucion date default null,
+estado enum('entregado','retrasado','activo') default null,
+
+foreign key (id_usuario) references usuarios (id_usuario) on delete set null on update cascade,
+foreign key (isbn) references libros (isbn) on delete set null on update cascade
+);
+
+SELECT * FROM libros;
+SELECT * FROM prestamos;
+SELECT * FROM usuarios
+
 
