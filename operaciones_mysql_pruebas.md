@@ -223,5 +223,211 @@ BEGIN
 END $$
 DELIMITER ;
 ```
+1. Conceptos Clave Antes de Empezar
+Redundancia: Cuando un mismo dato se repite muchas veces en distintas filas o tablas.
+
+Dependencia funcional: Una columna depende de otra si su valor se determina completamente por esa otra columna.
+
+Clave primaria (PK): Columna o conjunto de columnas que identifican de forma única un registro.
+
+Clave foránea (FK): Columna que apunta a la PK de otra tabla para crear una relación.
+
+2. Reglas de Normalización
+🔹 Primera Forma Normal (1FN)
+Regla:
+
+Cada columna debe ser atómica (un solo dato, no listas ni valores repetidos).
+
+No puede haber filas duplicadas.
+
+Cada fila debe tener una PK.
+
+Cómo hacerlo:
+
+Elimina columnas con listas o valores repetidos.
+
+Crea una nueva tabla para datos que se repiten.
+
+Define una PK para cada tabla.
+
+Ejemplo (NO normalizado):
+
+ClienteID	Nombre	Teléfonos
+1	Juan	123, 456
+2	Ana	789
+
+✅ 1FN:
+
+Tabla Cliente
+
+ClienteID	Nombre
+1	Juan
+2	Ana
+
+Tabla Teléfono
+
+TelefonoID	ClienteID	Teléfono
+1	1	123
+2	1	456
+3	2	789
+
+🔹 Segunda Forma Normal (2FN)
+Regla:
+
+Debe cumplir 1FN.
+
+No debe haber dependencias parciales en PK compuestas (ninguna columna no clave debe depender solo de parte de la PK).
+
+Cómo hacerlo:
+
+Identifica si la PK tiene varias columnas.
+
+Si una columna depende solo de una parte de la PK, muévela a otra tabla.
+
+Ejemplo:
+Supongamos que tenemos una tabla de pedidos con PK compuesta (PedidoID, ProductoID):
+
+PedidoID	ProductoID	NombreProducto	Cantidad
+1	10	Manzana	3
+1	20	Pan	2
+
+El NombreProducto depende solo de ProductoID, no de la combinación completa.
+
+✅ 2FN:
+
+Tabla Pedido
+
+PedidoID	ProductoID	Cantidad
+1	10	3
+1	20	2
+
+Tabla Producto
+
+ProductoID	NombreProducto
+10	Manzana
+20	Pan
+
+🔹 Tercera Forma Normal (3FN)
+Regla:
+
+Debe cumplir 2FN.
+
+No debe haber dependencias transitivas (una columna no clave depende de otra columna no clave).
+
+Cómo hacerlo:
+
+Identifica si una columna no clave depende de otra columna no clave.
+
+Pásala a otra tabla y usa una FK.
+
+Ejemplo (2FN pero no 3FN):
+
+ProductoID	NombreProducto	CategoriaID	CategoriaNombre
+10	Manzana	1	Frutas
+20	Pan	2	Panadería
+
+CategoriaNombre depende de CategoriaID, no directamente de ProductoID.
+
+✅ 3FN:
+
+Tabla Producto
+
+ProductoID	NombreProducto	CategoriaID
+10	Manzana	1
+20	Pan	2
+
+Tabla Categoría
+
+CategoriaID	CategoriaNombre
+1	Frutas
+2	Panadería
+
+3. Resumen Visual
+Forma Normal	Elimina...	Ejemplo de Solución
+1FN	Datos repetidos o no atómicos	Separar en tablas
+2FN	Dependencias parciales	Dividir PK compuesta
+3FN	Dependencias transitivas	Tablas intermedias
+
+4. Consejos Prácticos
+Siempre empieza por entender el negocio antes de cortar tablas.
+
+Documenta cada cambio.
+
+Usa diagramas ER para visualizar relaciones.
+
+Normalizar demasiado puede afectar rendimiento en consultas grandes; busca equilibrio.
+
+
+Ejemplo de un MER "bueno" — Sistema de Biblioteca
+Entidades y atributos:
+
+Usuario (PK: id_usuario)
+
+nombre
+
+apellido
+
+email
+
+telefono
+
+direccion
+
+Libro (PK: id_libro)
+
+titulo
+
+autor
+
+isbn
+
+año_publicacion
+
+Préstamo (PK: id_prestamo)
+
+fecha_prestamo
+
+fecha_devolucion
+
+estado
+
+Relaciones:
+
+Usuario — (1:N) → Préstamo
+(Un usuario puede hacer varios préstamos, pero cada préstamo pertenece a un único usuario)
+
+Libro — (N:M) → Préstamo
+(Un libro puede estar en muchos préstamos y un préstamo puede incluir varios libros)
+
+Esto se resuelve creando una entidad intermedia llamada DetallePrestamo que tenga:
+
+PK compuesta: id_prestamo + id_libro
+
+Atributos: cantidad, observaciones.
+
+Cardinalidades en notación Crow’s Foot:
+
+Usuario (1) ———< (N) Préstamo
+
+Libro (N) ———< (N) DetallePrestamo >——— (1) Préstamo
+
+Visualmente (simplificado):
+
+css
+Copiar
+Editar
+[Usuario]1 --------< [Préstamo] >--------< [DetallePrestamo] >-------- [Libro]
+Buenas prácticas que cumple:
+
+PK y FK claras (todas las relaciones bien identificadas).
+
+Sin redundancias (datos como autor de un libro están en Libro, no en Préstamo).
+
+Resuelve N:M con tabla intermedia (DetallePrestamo).
+
+Cardinalidades explícitas para evitar ambigüedad.
+
+Atributos en las entidades correctas (no meter fecha_prestamo en Libro, por ejemplo).
+
 
 
