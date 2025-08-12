@@ -1,0 +1,50 @@
+<link rel="stylesheet" href="./app/css/styles.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<nav class="mb-4">
+    <a href="index.html" class="btn btn-outline-primary">Préstamos</a>
+    <a href="usuarios.html" class="btn btn-outline-primary">Usuarios</a>
+    <a href="libros.html" class="btn btn-outline-primary">Libros</a>
+    <a href="login.html" class="btn btn-outline-danger float-end">Cerrar sesión</a>
+</nav>
+
+<h2>Gestión de Libros</h2>
+<form id="libroForm" class="mb-4">
+    <input type="hidden" id="id_libro">
+
+    <div class="row g-3">
+        <div class="col-md-2">
+            <input type="text" class="form-control" id="titulo" placeholder="Título" required>
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" id="autor" placeholder="Autor" required>
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" id="isbn" placeholder="ISBN" required>
+        </div>
+        <div class="col-md-2">
+            <input type="date" class="form-control" id="fecha_publicacion" required>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Guardar Libro</button>
+        </div>
+    </div>
+</form>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ISBN</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Fecha Publicación</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="tablaLibros">
+        <!-- Datos dinámicos -->
+    </tbody>
+</table>
+
+<script type="module" src="./server/libros.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>

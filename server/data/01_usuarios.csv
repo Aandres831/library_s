@@ -1,0 +1,6 @@
+id_usuario,nombre_completo,identificacion,correo,contrasena,telefono
+1,Juan Pérez,12345778,juan.perez@example.com,pass12345,3001112233
+2,María Gómez,12375678,maria.gomez@example.com,pass12345,3002223344
+3,Carlos Rodríguez,22345678,carlos.rod@example.com,pass12345,3003334455
+4,Ana Torres,12345678,ana.torres@example.com,pass12345,3004445566
+5,Luis Herrera,13345678,luis.herrera@example.com,pass12345,3005556677
